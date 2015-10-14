@@ -5,6 +5,7 @@ var UserController = require('../controllers/user.controller');
 var documentCtrl = new DocumentController();
 var userCtrl = new UserController();
 
+//document routes defined
 module.exports = function(app) {
 
   router.route('/')

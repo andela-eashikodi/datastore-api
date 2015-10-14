@@ -3,6 +3,7 @@ var router = express.Router();
 var UserController = require('../controllers/user.controller');
 var ctrl = new UserController();
 
+// user routes defined
 module.exports = function(app) {
   router.route('/login')
     .post(ctrl.verifyUser, ctrl.userLogin);

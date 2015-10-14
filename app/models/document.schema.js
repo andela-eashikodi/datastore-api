@@ -30,8 +30,8 @@ documentSchema.pre('save', function(next) {
   file.last_modified = currentDate;
   if(!file.date_created) {
     file.date_created = currentDate;
-    next();
   }
+  next();
 });
 
 mongoose.model('Document', documentSchema);

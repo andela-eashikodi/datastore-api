@@ -7,6 +7,7 @@ var User = mongoose.model('User');
 var Document = mongoose.model('Document');
 var UserController = function() {};
 
+// method to authenticate user
 UserController.prototype.userAuth = function(req, res) {
   User.findOne({email: req.body.email}, function(err, user) {
     if (!user) {
@@ -16,11 +17,13 @@ UserController.prototype.userAuth = function(req, res) {
       });
     } 
     else {
+      // user password input is compared with saved password
       var validPassword = user.comparePassword(req.body.password);
       if (validPassword) {
         var token = jwt.sign(user, config.secret, {
           expiresInMinutes: 1440 //24hr expiration
         });
+        // user is authenticated and receives a token
         res.json({
           success: true,
           token: token
@@ -36,6 +39,7 @@ UserController.prototype.userAuth = function(req, res) {
   });
 };
 
+// this middleware attach user info to req
 UserController.prototype.verifyUserAuth = function(req, res, next) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
@@ -53,7 +57,6 @@ UserController.prototype.verifyUserAuth = function(req, res, next) {
       }
     });
   } else {
-    //show http 403 message when token is not provided
     return res.json({
       success: false,
       message: 'No token provided.'
@@ -62,6 +65,7 @@ UserController.prototype.verifyUserAuth = function(req, res, next) {
   }
 };
 
+// this middlewares verify user to grant a session
 UserController.prototype.verifyUser = function(req, res, next) {
    User.findOne({email: req.body.email}, function(err, user) {
     if (!user) {
@@ -87,6 +91,7 @@ UserController.prototype.verifyUser = function(req, res, next) {
   });
 };
 
+// checks if user has session granted
 UserController.prototype.userLogin = function(req, res) {
   if(req.session && req.session.user) {
     /*
@@ -107,6 +112,7 @@ UserController.prototype.userLogin = function(req, res) {
   }
 };
 
+// session is cleared and user is logged out
 UserController.prototype.userLogout = function(req, res) {
   req.session.reset();
   /*

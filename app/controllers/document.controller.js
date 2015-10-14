@@ -4,7 +4,9 @@ var Document = mongoose.model('Document');
 var DocumentController = function() {};
 
 DocumentController.prototype.createDocument = function(req, res) {
+  // user id is attached to the req
   req.body.ownerId = req.decoded._id;
+  // documents are searched for a possible duplicate
   Document.findOne({title: req.body.title}, function(err, doc) {
     if (doc) {
       res.json({
@@ -13,6 +15,7 @@ DocumentController.prototype.createDocument = function(req, res) {
       });
     }
     else {
+      //new document is hereby created
       Document.create(req.body, function(err, doc) {
         if (err) {
           return res.json(err);

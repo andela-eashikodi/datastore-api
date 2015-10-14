@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "jasmine-node spec/api_route.spec.js --forceexit --verbose",
+
+    "prestart": "npm install",
     "start": "nodemon server"
   },
   "repository": {
@@ -31,5 +33,9 @@
   "devDependencies": {
     "jasmine-node": "^1.14.5",
     "supertest": "^1.1.0"
+  },
+  "bin": {
+    "createnewuser": "script.js",
+    "createnewdoc": "script.js"
   }
 }
